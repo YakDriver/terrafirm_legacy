@@ -32,6 +32,7 @@ phases:
         then
           aws configure set region $AWS_REGION --profile $NAMED_PROFILE
         fi
+      - ./terraform --version
       - echo "We are about to FAIL!"
       - exit 1
       - 
