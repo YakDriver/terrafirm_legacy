@@ -6,7 +6,7 @@ env:
     TF_ZIP: https://releases.hashicorp.com/terraform/0.11.1/terraform_0.11.1_linux_amd64.zip
     TERRAFIRM_DESC_URL: https://github.com/YakDriver/terrafirm
   parameter-store:
-    PS_VAR: "/CodeBuild/terrafirm/random_var"
+    NAMED_PROFILE: "/CodeBuild/terrafirm/named_profile"
 
 phases:
   install:
@@ -20,13 +20,13 @@ phases:
       - echo "Installed Terraform."
   pre_build:
     commands:
-      - echo "We are about to FAIL!"
-      - exit 1
       - |
         if [ -n "${AWS_REGION}" ]
         then
           aws configure set region $AWS_REGION --profile $SPEL_IDENTIFIER
         fi
+      - echo "We are about to FAIL!"
+      - exit 1
       - 
       - echo "Validating packer template, spel/minimal-linux.json"
       - |
