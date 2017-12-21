@@ -21,9 +21,16 @@ phases:
   pre_build:
     commands:
       - |
+        if [ -z "${NAMED_PROFILE}" ]
+        then
+          echo "No named profile given, using default (terrafirm)..."
+          NAMED_PROFILE=terrafirm
+          export NAMED_PROFILE
+        fi
+      - |
         if [ -n "${AWS_REGION}" ]
         then
-          aws configure set region $AWS_REGION --profile $SPEL_IDENTIFIER
+          aws configure set region $AWS_REGION --profile $NAMED_PROFILE
         fi
       - echo "We are about to FAIL!"
       - exit 1
