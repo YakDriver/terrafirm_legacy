@@ -11,7 +11,7 @@ env:
 phases:
   install:
     commands:
-      - echo "Parameter store message: $PS_VAR..."
+      - echo "Parameter store message, $PS_VAR..."
       - echo "Installing unzip............"
       - apt -y install unzip
       - echo "Installing Terraform..."
