@@ -1,1 +1,138 @@
-abc
+---
+version: 0.2
+
+env:
+  variables:
+    TF_ZIP: https://releases.hashicorp.com/terraform/0.11.1/terraform_0.11.1_linux_amd64.zip
+    TERRAFIRM_DESC_URL: https://github.com/YakDriver/terrafirm
+  parameter-store:
+    PS_VAR: "/CodeBuild/terrafirm/random_var"
+
+phases:
+  install:
+    commands:
+      - echo "Parameter store message: $PS_VAR..."
+      - echo "Installing unzip............"
+      - apt -y install unzip
+      - echo "Installing Terraform..."
+      - echo `pwd`
+      - curl -L "${TF_ZIP}" -o tf.zip && unzip tf.zip
+  pre_build:
+    commands:
+      - |
+        if [ -n "${AWS_REGION}" ]
+        then
+          aws configure set region $AWS_REGION --profile $SPEL_IDENTIFIER
+        fi
+      - 
+      - echo "Validating packer template, spel/minimal-linux.json"
+      - |
+        AWS_PROFILE=$SPEL_IDENTIFIER ./packer validate \
+          -only "${SPEL_BUILDERS}" \
+          -var "ami_groups=${AMI_GROUPS}" \
+          -var "ami_regions=${AMI_REGIONS}" \
+          -var "ami_users=${AMI_USERS}" \
+          -var "aws_region=${AWS_REGION}" \
+          -var "spel_desc_url=${SPEL_DESC_URL}" \
+          -var "spel_amigen6source=${SPEL_AMIGEN6SOURCE}" \
+          -var "spel_amigen7source=${SPEL_AMIGEN7SOURCE}" \
+          -var "spel_amiutilsource=${SPEL_AMIUTILSOURCE}" \
+          -var "spel_awsclisource=${SPEL_AWSCLISOURCE}" \
+          -var "spel_customreporpm6=${SPEL_CUSTOMREPORPM6}" \
+          -var "spel_customreporpm7=${SPEL_CUSTOMREPORPM7}" \
+          -var "spel_customreponame6=${SPEL_CUSTOMREPONAME6}" \
+          -var "spel_customreponame7=${SPEL_CUSTOMREPONAME7}" \
+          -var "spel_disablefips=${SPEL_DISABLEFIPS}" \
+          -var "spel_epel6release=${SPEL_EPEL6RELEASE}" \
+          -var "spel_epel7release=${SPEL_EPEL7RELEASE}" \
+          -var "spel_epelrepo=${SPEL_EPELREPO}" \
+          -var "spel_extrarpms=${SPEL_EXTRARPMS}" \
+          -var "spel_identifier=${SPEL_IDENTIFIER}" \
+          -var "spel_version=${SPEL_VERSION}" \
+          -var "source_ami_centos6_hvm=${SOURCE_AMI_CENTOS6_HVM}" \
+          -var "source_ami_centos6_pvm=${SOURCE_AMI_CENTOS6_PVM}" \
+          -var "source_ami_centos7_hvm=${SOURCE_AMI_CENTOS7_HVM}" \
+          -var "source_ami_rhel6_hvm=${SOURCE_AMI_RHEL6_HVM}" \
+          -var "source_ami_rhel7_hvm=${SOURCE_AMI_RHEL7_HVM}" \
+          -var "ssh_private_ip=${SSH_PRIVATE_IP}" \
+          -var "subnet_id=${SUBNET_ID}" \
+          -var "vpc_id=${VPC_ID}" \
+          spel/minimal-linux.json
+  build:
+    commands:
+      - echo "Building packer template, spel/minimal-linux.json"
+      - |
+        AWS_PROFILE=$SPEL_IDENTIFIER ./packer build \
+          -only "${SPEL_BUILDERS}" \
+          -var "ami_groups=${AMI_GROUPS}" \
+          -var "ami_regions=${AMI_REGIONS}" \
+          -var "ami_users=${AMI_USERS}" \
+          -var "aws_region=${AWS_REGION}" \
+          -var "spel_desc_url=${SPEL_DESC_URL}" \
+          -var "spel_amigen6source=${SPEL_AMIGEN6SOURCE}" \
+          -var "spel_amigen7source=${SPEL_AMIGEN7SOURCE}" \
+          -var "spel_amiutilsource=${SPEL_AMIUTILSOURCE}" \
+          -var "spel_awsclisource=${SPEL_AWSCLISOURCE}" \
+          -var "spel_customreporpm6=${SPEL_CUSTOMREPORPM6}" \
+          -var "spel_customreporpm7=${SPEL_CUSTOMREPORPM7}" \
+          -var "spel_customreponame6=${SPEL_CUSTOMREPONAME6}" \
+          -var "spel_customreponame7=${SPEL_CUSTOMREPONAME7}" \
+          -var "spel_disablefips=${SPEL_DISABLEFIPS}" \
+          -var "spel_epel6release=${SPEL_EPEL6RELEASE}" \
+          -var "spel_epel7release=${SPEL_EPEL7RELEASE}" \
+          -var "spel_epelrepo=${SPEL_EPELREPO}" \
+          -var "spel_extrarpms=${SPEL_EXTRARPMS}" \
+          -var "spel_identifier=${SPEL_IDENTIFIER}" \
+          -var "spel_version=${SPEL_VERSION}" \
+          -var "source_ami_centos6_hvm=${SOURCE_AMI_CENTOS6_HVM}" \
+          -var "source_ami_centos6_pvm=${SOURCE_AMI_CENTOS6_PVM}" \
+          -var "source_ami_centos7_hvm=${SOURCE_AMI_CENTOS7_HVM}" \
+          -var "source_ami_rhel6_hvm=${SOURCE_AMI_RHEL6_HVM}" \
+          -var "source_ami_rhel7_hvm=${SOURCE_AMI_RHEL7_HVM}" \
+          -var "ssh_private_ip=${SSH_PRIVATE_IP}" \
+          -var "subnet_id=${SUBNET_ID}" \
+          -var "vpc_id=${VPC_ID}" \
+          spel/minimal-linux.json
+      - |
+        for BUILDER in $(echo $SPEL_BUILDERS | sed -e 's/,/ /g')
+        do
+          AMI_NAME="${SPEL_IDENTIFIER}-${BUILDER}-${SPEL_VERSION}.x86_64-gp2"
+          BUILDER_ENV=$(echo $BUILDER | sed -e 's/\./_/g' -e 's/-/_/g')
+          export $BUILDER_ENV=$(export AWS_DEFAULT_REGION=$AWS_REGION; aws ec2 describe-images --filters Name=name,Values="$AMI_NAME" --query 'Images[0].ImageId' --out text --profile $SPEL_IDENTIFIER)
+        done
+      - |
+        AWS_PROFILE=$SPEL_IDENTIFIER ./packer build \
+          -only "${SPEL_BUILDERS}" \
+          -var "aws_region=${AWS_REGION}" \
+          -var "pip_url=${PIP_URL}" \
+          -var "pypi_url=${PYPI_URL}" \
+          -var "spel_identifier=${SPEL_IDENTIFIER}" \
+          -var "spel_version=${SPEL_VERSION}" \
+          -var "spel_disablefips=${SPEL_DISABLEFIPS}" \
+          -var "ssh_private_ip=${SSH_PRIVATE_IP}" \
+          -var "subnet_id=${SUBNET_ID}" \
+          -var "vpc_id=${VPC_ID}" \
+          tests/minimal-linux.json
+  post_build:
+    commands:
+      - echo "Sleeping 180 seconds to ensure the AMI Name is searchable..."; sleep 180
+      - |
+      - |
+        for BUILDER in $(echo $SPEL_BUILDERS | sed -e 's/,/ /g')
+        do
+          AMI_NAME="validation-${SPEL_IDENTIFIER}-${BUILDER}-${SPEL_VERSION}.x86_64-gp2"
+          AMI_ID=$(export AWS_DEFAULT_REGION=$AWS_REGION; aws ec2 describe-images --filters Name=name,Values="$AMI_NAME" --query 'Images[0].ImageId' --out text --profile $SPEL_IDENTIFIER)
+          (export AWS_DEFAULT_REGION=$AWS_REGION; test "$AMI_ID" != "None" && aws ec2 deregister-image --image-id $AMI_ID --profile $SPEL_IDENTIFIER)
+          if [ "${SPEL_CI}" = "true" ]
+          then
+            AMI_NAME="${SPEL_IDENTIFIER}-${BUILDER}-${SPEL_VERSION}.x86_64-gp2"
+            AMI_ID=$(export AWS_DEFAULT_REGION=$AWS_REGION; aws ec2 describe-images --filters Name=name,Values="$AMI_NAME" --query 'Images[0].ImageId' --out text --profile $SPEL_IDENTIFIER)
+            (export AWS_DEFAULT_REGION=$AWS_REGION; test "$AMI_ID" != "None" && aws ec2 deregister-image --image-id $AMI_ID --profile $SPEL_IDENTIFIER)
+          fi
+        done
+      - echo "Packer build completed on $(date)"
+
+artifacts:
+  files:
+    - '**/*'
+  base-directory: '.spel'
