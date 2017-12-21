@@ -17,8 +17,11 @@ phases:
       - echo "Installing Terraform..."
       - echo `pwd`
       - curl -L "${TF_ZIP}" -o tf.zip && unzip tf.zip
+      - echo "Installed Terraform."
   pre_build:
     commands:
+      - echo "We are about to FAIL!"
+      - exit 1
       - |
         if [ -n "${AWS_REGION}" ]
         then
@@ -135,4 +138,4 @@ phases:
 artifacts:
   files:
     - '**/*'
-  base-directory: '.spel'
+  base-directory: '.terrafirm'
