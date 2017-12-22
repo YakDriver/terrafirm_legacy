@@ -51,4 +51,3 @@ phases:
 artifacts:
   files:
     - '**/*'
-  base-directory: '.terrafirm'
