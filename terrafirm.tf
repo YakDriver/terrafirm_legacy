@@ -5,7 +5,6 @@ resource "aws_instance" "centos6" {
   connection {
     type     = "ssh"
     user     = "maintuser"
-    password = "${var.root_password}"
   }
   
   provisioner "remote-exec" {
