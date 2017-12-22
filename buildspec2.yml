@@ -33,6 +33,9 @@ phases:
         fi
       - ./terraform --version
       - cat terrafirm.tf
+      - ./terraform init
+      - ./terraform plan
+      - ./terraform apply
       - echo "We are about to FAIL!"
       - exit 1
       - 
