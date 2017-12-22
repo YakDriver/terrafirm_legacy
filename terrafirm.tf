@@ -9,4 +9,6 @@ resource "aws_instance" "centos6" {
   provisioner "local-exec" {
     command = "cat ip_address.txt"
   }
+  
+  
 }
