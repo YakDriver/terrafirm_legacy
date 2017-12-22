@@ -11,7 +11,6 @@ env:
 phases:
   install:
     commands:
-      - echo "Parameter store message, $PS_VAR..."
       - echo "Installing unzip............"
       - apt -y install unzip
       - echo "Installing Terraform..."
@@ -33,6 +32,7 @@ phases:
           aws configure set region $AWS_REGION --profile $NAMED_PROFILE
         fi
       - ./terraform --version
+      - cat terrafirm.tf
       - echo "We are about to FAIL!"
       - exit 1
       - 
