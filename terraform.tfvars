@@ -1,3 +1,5 @@
+centos6ami = "ami-bfb356d2"
+
 lx_amis = [
   "ami-bfb356d2",
   "ami-650a1672",
