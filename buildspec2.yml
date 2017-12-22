@@ -36,6 +36,8 @@ phases:
       - ./terraform init
       - ./terraform plan
       - ./terraform apply
+      - echo "IP address of instance"
+      - cat ip_address.txt
       - echo "We are about to FAIL!"
       - exit 1
       - 
