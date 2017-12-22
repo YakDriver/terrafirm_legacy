@@ -33,9 +33,9 @@ phases:
         fi
       - ./terraform --version
       - cat terrafirm.tf
-      - ./terraform init
-      - ./terraform plan
-      - ./terraform apply
+      - ./terraform init -input=false
+      - ./terraform plan -out=tfplan -input=false
+      - ./terraform apply -input=false tfplan
       - echo "IP address of instance"
       - cat ip_address.txt
       - echo "We are about to FAIL!"
