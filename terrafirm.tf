@@ -7,12 +7,13 @@ resource "aws_instance" "centos6" {
     delete = "10m"
   }
   
-  #connection {
-  #  type     = "ssh"
-  #  user     = "maintuser"
-  #}
+  connection {
+    type     = "ssh"
+    user     = "maintuser"
+    secret_key = "${var.ssh_key}"
+  }
   
-  #provisioner "remote-exec" {
-  #  script = "watchmaker.sh"
-  #}
+  provisioner "remote-exec" {
+    script = "watchmaker.sh"
+  }
 }
