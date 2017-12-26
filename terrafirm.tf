@@ -1,12 +1,14 @@
+provider "aws" {
+  region = "us-east-1"
+  assume_role {
+    role_arn     = "arn:aws:iam::terrafirm:role/codebuild-terrafirm-service-role"
+  }
+}
+
 resource "aws_instance" "centos6" {
   #ami = "ami-2b8ce651" #spel partitioned
   ami = "ami-55ef662f"  #amazon linux 2017.09.1
   instance_type = "t2.micro"
-  region = "us-east-1"
-  
-  assume_role {
-    role_arn     = "arn:aws:iam::terrafirm:role/codebuild-terrafirm-service-role"
-  }
   
   timeouts {
     create = "20m"
