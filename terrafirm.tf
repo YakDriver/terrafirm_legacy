@@ -6,16 +6,16 @@ resource "aws_key_pair" "auth" {
 }
 
 # Create a VPC for instance
-resource "aws_vpc" "default" {
-  cidr_block = "10.0.0.0/16"
-}
+#resource "aws_vpc" "default" {
+#  cidr_block = "10.0.0.0/16"
+#}
 
 # Subnet for instance
-resource "aws_subnet" "default" {
-  vpc_id                  = "${aws_vpc.default.id}"
-  cidr_block              = "10.0.1.0/24"
-  map_public_ip_on_launch = true
-}
+#resource "aws_subnet" "default" {
+#  vpc_id                  = "${aws_vpc.default.id}"
+#  cidr_block              = "10.0.1.0/24"
+#  map_public_ip_on_launch = true
+#}
 
 # Security group to access the instances over SSH
 resource "aws_security_group" "terrafirm" {
@@ -61,12 +61,12 @@ resource "aws_instance" "centos6" {
     timeout   = "30m"
   }
   
-  provisioner "remote-exec" {
-    inline = [
-        "echo hello bill > text_delete.txt",
-        "date >> text_delete.txt",
-      ]
-  }
+  #provisioner "remote-exec" {
+  #  inline = [
+  #      "echo hello bill > text_delete.txt",
+  #      "date >> text_delete.txt",
+  #    ]
+  #}
   
   provisioner "remote-exec" {
     script = "watchmaker.sh"
