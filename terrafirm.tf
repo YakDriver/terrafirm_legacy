@@ -3,6 +3,10 @@ resource "aws_instance" "centos6" {
   ami = "ami-55ef662f"  #amazon linux 2017.09.1
   instance_type = "t1.micro"
   
+  assume_role {
+    role_arn     = "arn:aws:iam::terrafirm:role/codebuild-terrafirm-service-role"
+  }
+  
   timeouts {
     create = "20m"
     delete = "10m"
@@ -11,7 +15,7 @@ resource "aws_instance" "centos6" {
   connection {
     type     = "ssh"
     #user     = "maintuser"
-    private_key = "${var.private_key}"
+    #private_key = "${var.private_key}"
     user     = "root"
   }
   
