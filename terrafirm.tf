@@ -68,7 +68,7 @@ resource "aws_instance" "centos6" {
       ]
   }
   
-  #provisioner "remote-exec" {
-  #  script = "watchmaker.sh"
-  #}
+  provisioner "remote-exec" {
+    script = "watchmaker.sh"
+  }
 }
