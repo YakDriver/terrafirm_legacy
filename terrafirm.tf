@@ -39,6 +39,7 @@ resource "aws_instance" "centos6" {
   instance_type = "t2.micro"
   key_name = "${aws_key_pair.auth.id}"
   vpc_security_group_ids = ["${aws_security_group.terrafirm.id}"]
+  subnet_id = "${aws_subnet.default.id}"
   
   timeouts {
     create = "20m"
