@@ -62,6 +62,13 @@ resource "aws_instance" "centos6" {
   }
   
   provisioner "remote-exec" {
+    inline = [
+        "echo hello bill > text_delete.txt",
+        "date >> text_delete.txt",
+      ]
+  }
+  
+  provisioner "remote-exec" {
     script = "watchmaker.sh"
   }
 }
