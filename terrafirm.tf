@@ -47,6 +47,20 @@ resource "aws_instance" "centos6" {
   key_name = "${aws_key_pair.auth.id}"
   vpc_security_group_ids = ["${aws_security_group.terrafirm.id}"]
   #subnet_id = "${aws_subnet.default.id}"
+  user_data = <<USERDATA
+  #!/bin/sh
+  PIP_URL=https://bootstrap.pypa.io/get-pip.py
+  PYPI_URL=https://pypi.org/simple
+
+  # Install pip
+  curl "$PIP_URL" | python - --index-url="$PYPI_URL" wheel==0.29.0
+
+  # Install watchmaker
+  pip install --index-url="$PYPI_URL" --upgrade pip setuptools watchmaker
+
+  # Run watchmaker
+  watchmaker --log-level debug --log-dir=/var/log/watchmaker
+USERDATA
   
   timeouts {
     create = "30m"
