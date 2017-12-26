@@ -34,14 +34,15 @@ phases:
         fi
       - echo "Terraform version " ; ./terraform --version
       - echo "Terraform config file " ; cat terrafirm.tf
-      - echo "Initializing Terraform " ; TF_VAR_ssh_key="${SSH_KEY}" ./terraform init -input=false
-      - echo "Create provisiong plan " ; TF_VAR_ssh_key="${SSH_KEY}" ./terraform plan -out=tfplan -input=false
+      #- echo "Initializing Terraform " ; TF_VAR_ssh_key="${SSH_KEY}" ./terraform init -input=false
+      - echo "Initializing Terraform " ; ./terraform init -input=false
+      - echo "Create provisiong plan " ; ./terraform plan -out=tfplan -input=false
       - 
   build:
     commands:
       - echo "Applying Terraform plan (which installs watchmaker) "
       - echo "NOTE, this will fail if remote execute calls fail"
-      - TF_VAR_ssh_key="${SSH_KEY}" ./terraform apply -input=false tfplan
+      - ./terraform apply -input=false tfplan
   post_build:
     commands:
       - echo "Destroying everything..."
