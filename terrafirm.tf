@@ -49,8 +49,8 @@ resource "aws_instance" "centos6" {
   #subnet_id = "${aws_subnet.default.id}"
   
   timeouts {
-    create = "20m"
-    delete = "10m"
+    create = "30m"
+    delete = "30m"
   }
   
   connection {
@@ -58,6 +58,7 @@ resource "aws_instance" "centos6" {
     #user     = "maintuser"
     private_key = "${var.private_key}"
     #user     = "root"
+    timeout   = "30m"
   }
   
   provisioner "remote-exec" {
