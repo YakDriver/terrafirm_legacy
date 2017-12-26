@@ -61,8 +61,11 @@ phases:
   post_build:
     commands:
       - echo "Destroying everything..."
-      - TF_VAR_private_key="${SSH_KEY}" ./terraform destroy -input=false -force
-      #- TF_VAR_private_key="${SSH_KEY}" ./terraform destroy -target=aws_security_group.terrafirm -input=false -force
+      #- TF_VAR_private_key="${SSH_KEY}" ./terraform destroy -input=false -force
+      - TF_VAR_private_key="${SSH_KEY}" ./terraform destroy -target=aws_security_group.terrafirm -input=false -force
+      - TF_VAR_private_key="${SSH_KEY}" ./terraform destroy -target=aws_security_group.terrafirm -input=false -force
+      - TF_VAR_private_key="${SSH_KEY}" ./terraform destroy -target=aws_security_group.terrafirm -input=false -force
+      - TF_VAR_private_key="${SSH_KEY}" ./terraform destroy -target=aws_security_group.terrafirm -input=false -force
       - echo "Terrafirm completed on $(date)"
 
 artifacts:
