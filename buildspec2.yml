@@ -41,7 +41,7 @@ phases:
     commands:
       - echo "Applying Terraform plan (which installs watchmaker) "
       - echo "NOTE, this will fail if remote execute calls fail"
-      - ./terraform apply -input=false tfplan
+      - TF_VAR_ssh_key=${SSH_KEY} ./terraform apply -input=false tfplan
   post_build:
     commands:
       - echo "Destroying everything..."
