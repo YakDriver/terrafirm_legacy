@@ -55,7 +55,7 @@ resource "aws_instance" "centos6" {
   
   connection {
     #type     = "ssh"
-    #user     = "maintuser"
+    user     = "ec2-user"
     private_key = "${var.private_key}"
     #user     = "root"
     timeout   = "30m"
