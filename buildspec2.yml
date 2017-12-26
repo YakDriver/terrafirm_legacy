@@ -8,6 +8,8 @@ env:
   parameter-store:
     NAMED_PROFILE: "/CodeBuild/terrafirm/named_profile"
     SSH_KEY: "/CodeBuild/terrafirm/ssh_key"
+    SECRET_KEY: "/CodeBuild/terrafirm/secret_key"
+    ACCESS_KEY_ID: "/CodeBuild/terrafirm/access_key_id"
 
 phases:
   install:
@@ -25,13 +27,25 @@ phases:
         then
           echo "No named profile given, using default (terrafirm)..."
           NAMED_PROFILE=terrafirm
-          export NAMED_PROFILE
+        else
+          NAMED_PROFILE="${NAMED_PROFILE}"
         fi
+        export NAMED_PROFILE
+        echo "AWS profile is $NAMED_PROFILE"
       - |
         if [ -n "${AWS_REGION}" ]
         then
           aws configure set region $AWS_REGION --profile $NAMED_PROFILE
         fi
+      - |
+        if [ -z "${ACCESS_KEY}" ]
+        then
+          aws configure set aws_access_key_id "${ACCESS_KEY_ID}" --profile $NAMED_PROFILE
+          aws configure set aws_secret_access_key "${SECRET_KEY}" --profile $NAMED_PROFILE
+        fi
+      - echo "AWS Profile setup..."
+      - AWS_PROFILE=$NAMED_PROFILE
+      - export AWS_PROFILE
       - echo "Terraform version " ; ./terraform --version
       - echo "Terraform config file " ; cat terrafirm.tf
       #- echo "Initializing Terraform " ; TF_VAR_private_key="${SSH_KEY}" ./terraform init -input=false
