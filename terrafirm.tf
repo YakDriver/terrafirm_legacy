@@ -21,7 +21,7 @@ resource "aws_subnet" "default" {
 resource "aws_security_group" "terrafirm" {
   name        = "terrafirm_sg"
   description = "Used in terrafirm"
-  vpc_id      = "${aws_vpc.default.id}"
+  #vpc_id      = "${aws_vpc.default.id}"
 
   # SSH access from anywhere
   ingress {
@@ -46,7 +46,7 @@ resource "aws_instance" "centos6" {
   instance_type = "t2.micro"
   key_name = "${aws_key_pair.auth.id}"
   vpc_security_group_ids = ["${aws_security_group.terrafirm.id}"]
-  subnet_id = "${aws_subnet.default.id}"
+  #subnet_id = "${aws_subnet.default.id}"
   
   timeouts {
     create = "20m"
@@ -54,7 +54,7 @@ resource "aws_instance" "centos6" {
   }
   
   connection {
-    type     = "ssh"
+    #type     = "ssh"
     #user     = "maintuser"
     #private_key = "${var.private_key}"
     user     = "root"
