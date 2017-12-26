@@ -46,11 +46,11 @@ phases:
       - echo "AWS Profile setup..."
       - AWS_PROFILE=$NAMED_PROFILE
       - export AWS_PROFILE
-      - echo "Importing key pair " ; ./terraform import aws_key_pair.terrafirm_keypair svc_terrafirm
       - echo "Terraform version " ; ./terraform --version
       - echo "Terraform config file " ; cat terrafirm.tf
       #- echo "Initializing Terraform " ; TF_VAR_private_key="${SSH_KEY}" ./terraform init -input=false
       - echo "Initializing Terraform " ; ./terraform init -input=false
+      - echo "Importing key pair " ; ./terraform import aws_key_pair.terrafirm_keypair svc_terrafirm
       - echo "Create provisiong plan " ; ./terraform plan -out=tfplan -input=false
       - 
   build:
