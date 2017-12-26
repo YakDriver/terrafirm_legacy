@@ -11,7 +11,7 @@ resource "aws_instance" "centos6" {
   connection {
     type     = "ssh"
     #user     = "maintuser"
-    private_key = "${SSH_KEY}"
+    private_key = "${var.SSH_KEY}"
     user     = "root"
   }
   
