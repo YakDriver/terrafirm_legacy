@@ -1,7 +1,7 @@
 provider "aws" {
   region = "us-east-1"
   assume_role {
-    role_arn     = "arn:aws:iam::terrafirm:role/codebuild-terrafirm-service-role"
+    role_arn     = "arn:aws:iam::701759196663:role/service-role/codebuild-terrafirm-service-role"
   }
 }
 
