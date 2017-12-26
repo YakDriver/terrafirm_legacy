@@ -41,8 +41,8 @@ resource "aws_security_group" "terrafirm" {
 }
 
 resource "aws_instance" "centos6" {
-  #ami = "ami-2b8ce651" #spel partitioned
-  ami = "ami-55ef662f"  #amazon linux 2017.09.1
+  ami = "ami-2b8ce651" #spel partitioned
+  #ami = "ami-55ef662f"  #amazon linux 2017.09.1
   instance_type = "t2.micro"
   key_name = "${aws_key_pair.auth.id}"
   vpc_security_group_ids = ["${aws_security_group.terrafirm.id}"]
@@ -55,7 +55,8 @@ resource "aws_instance" "centos6" {
   
   connection {
     #type     = "ssh"
-    user     = "ec2-user"
+    #user     = "ec2-user"
+    user     = "maintuser"
     private_key = "${var.private_key}"
     #user     = "root"
     timeout   = "30m"
