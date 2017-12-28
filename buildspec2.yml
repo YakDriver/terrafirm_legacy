@@ -48,20 +48,23 @@ phases:
       #    aws configure set aws_secret_access_key "${SECRET_KEY}" --profile $NAMED_PROFILE
       #  fi
       - echo "AWS Profile setup..."
-      - AWS_PROFILE=$NAMED_PROFILE
-      - export AWS_PROFILE
+      - AWS_PROFILE=$NAMED_PROFILE ; export AWS_PROFILE
       - echo "Terraform version " ; ./terraform --version
-      - echo "Terraform config file " ; cat terrafirm.tf
+      - TF_VAR_private_key="${SSH_KEY}" ; export TF_VAR_private_key
+      - TF_VAR_public_key="${PUBLIC_KEY}" ; export TF_VAR_public_key
+      - TF_VAR_ami="${AMI}" ; export TF_VAR_ami
+      - TF_VAR_ssh_user="${SSH_USER}" ; export TF_VAR_ssh_user
+      #- echo "Terraform config file " ; cat terrafirm.tf
       #- echo "Initializing Terraform " ; TF_VAR_private_key="${SSH_KEY}" ./terraform init -input=false
-      - echo "Initializing Terraform " ; TF_VAR_private_key="${SSH_KEY}" ./terraform init -input=false
-      - echo "Importing key pair " ; TF_VAR_private_key="${SSH_KEY}" ./terraform import aws_key_pair.auth svc_terrafirm
-      - echo "Create provisiong plan " ; TF_VAR_private_key="${SSH_KEY}" ./terraform plan -out=tfplan -input=false
+      - echo "Initializing Terraform " ; ./terraform init -input=false
+      - echo "Importing key pair " ; ./terraform import aws_key_pair.auth svc_terrafirm
+      - echo "Create provisiong plan " ; ./terraform plan -out=tfplan -input=false
       - 
   build:
     commands:
       - echo "Applying Terraform plan (which installs watchmaker) "
       - echo "NOTE, this will fail if remote execute calls fail"
-      - TF_VAR_private_key="${SSH_KEY}" ./terraform apply -input=false tfplan
+      - ./terraform apply -input=false tfplan
       - AWS_INSTANCE_ID="$(TF_VAR_private_key="${SSH_KEY}" ./terraform state pull -target=aws_instance.centos6 -input=false | ./jq.dms '.modules[0].resources."aws_instance.centos6".primary.id')"
       - export AWS_INSTANCE_ID
       - echo "Instance ID, ${AWS_INSTANCE_ID}"
