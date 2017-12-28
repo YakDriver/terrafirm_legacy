@@ -35,9 +35,9 @@ phases:
         export NAMED_PROFILE
         echo "AWS profile is $NAMED_PROFILE"
       - |
-        if [ -n "${AWS_REGION}" ]
+        if [ -n "${REGION}" ]
         then
-          aws configure set region $AWS_REGION --profile $NAMED_PROFILE
+          aws configure set region $REGION --profile $NAMED_PROFILE
         fi
       #- |
       #  if [ -z "${ACCESS_KEY}" ]
