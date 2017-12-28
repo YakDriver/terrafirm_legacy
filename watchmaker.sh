@@ -1,14 +1,19 @@
-#!/bin/sh
-sudo yum -y update
+#!/bin/bash
 
-PIP_URL=https://bootstrap.pypa.io/get-pip.py
-PYPI_URL=https://pypi.org/simple
+wait_file() {
+  local file="$1"; shift
+  local wait_seconds="${1:-10}"; shift # 10 seconds as default timeout
 
-# Install pip
-curl "$PIP_URL" | python - --index-url="$PYPI_URL" wheel==0.29.0
+  until test $((wait_seconds--)) -eq 0 -o -f "$file" ; do sleep 1; done
 
-# Install watchmaker
-pip install --index-url="$PYPI_URL" --upgrade pip setuptools watchmaker
+  ((++wait_seconds))
+}
 
-# Run watchmaker
-watchmaker --log-level debug --log-dir=/var/log/watchmaker
+exec_file=/usr/bin/watchmaker
+
+wait_file "$exec_file" 300 || {
+  echo "Executable on remote instance never became available for $? seconds: '$exec_file'"
+  exit 1
+}
+
+echo "Version number: " ; /usr/bin/watchmaker --version
