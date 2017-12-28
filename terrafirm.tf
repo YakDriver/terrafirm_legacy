@@ -57,21 +57,12 @@ USERDATA
   }
   
   connection {
-    #type     = "ssh"
-    #user     = "ec2-user"
-    #user     = "maintuser"
+    #ssh connection to tier-2 instance
     user     = "${var.ssh_user}"
     private_key = "${var.private_key}"
-    #user     = "root"
     timeout   = "3m"
   }
   
-  #provisioner "remote-exec" {
-  #  inline = [
-  #      "echo hello bill > text_delete.txt",
-  #      "date >> text_delete.txt",
-  #    ]
-  #}
   
   provisioner "remote-exec" {
     inline = [
