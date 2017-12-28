@@ -41,7 +41,6 @@ resource "aws_security_group" "terrafirm" {
 }
 
 resource "aws_instance" "centos6" {
-  name = "terrafirm_dev"
   ami = "ami-658ce61f" #spel-minimal-centos-6.9-hvm-2017.12.1.x86_64-gp2
   #ami = "ami-55ef662f"  #amazon linux 2017.09.1
   instance_type = "t2.micro"
