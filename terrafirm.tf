@@ -61,7 +61,7 @@ curl "$PIP_URL" | python - --index-url="$PYPI_URL" wheel==0.29.0
 pip install --index-url="$PYPI_URL" --upgrade pip setuptools watchmaker
 
 # Run watchmaker
-watchmaker --log-level debug --log-dir=/var/log/watchmaker
+watchmaker -n --log-level debug --log-dir=/var/log/watchmaker
 USERDATA
   
   timeouts {
@@ -88,6 +88,7 @@ USERDATA
   
   provisioner "remote-exec" {
     inline = [
+      "sleep 120",
       "/usr/bin/watchmaker --version",
     ]
   }
