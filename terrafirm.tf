@@ -64,9 +64,10 @@ USERDATA
   
   
   provisioner "remote-exec" {
-    inline = [
-      "sleep 120",
-      "/usr/bin/watchmaker --version",
-    ]
+    script = "watchmaker.sh"
+    #inline = [
+    #  "sleep 120",
+    #  "/usr/bin/watchmaker --version",
+    #]
   }
 }
