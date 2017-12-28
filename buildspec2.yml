@@ -18,7 +18,8 @@ phases:
       - echo "Installing unzip............"
       - apt -y install unzip
       - echo "Installing jq..............."
-      - apt-get -y install jq
+      - curl -L "${JQ_INSTALL}" -o jq.dms && chmod +x jq.dms
+      - ./jq.dms --version
       - echo "Installing Terraform..."
       - echo `pwd`
       - curl -L "${TF_ZIP}" -o tf.zip && unzip tf.zip
