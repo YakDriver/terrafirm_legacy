@@ -74,9 +74,8 @@ phases:
     commands:
       - echo "Destroying everything..."
       #- TF_VAR_private_key="${SSH_KEY}" ./terraform destroy -input=false -force
-      #- TF_VAR_private_key="${SSH_KEY}" ./terraform destroy -target=aws_instance.centos6 -input=false -force
-      #- echo "Sleeping a while to give instance a chance to terminate "; sleep 60
-      #- TF_VAR_private_key="${SSH_KEY}" ./terraform destroy -target=aws_security_group.terrafirm -input=false -force
+      - ./terraform destroy -target=aws_instance.centos -input=false -force
+      - ./terraform destroy -target=aws_security_group.terrafirm -input=false -force
       - echo "Terrafirm completed on $(date)"
 
 artifacts:
