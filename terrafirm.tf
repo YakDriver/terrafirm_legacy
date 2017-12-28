@@ -2,7 +2,6 @@ provider "aws" {}
 
 resource "aws_key_pair" "auth" {
   key_name   = "${var.key_pair_name}"
-  #public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQC8BrNrVDV1jESQF5WXvTyVaW8JT4hZgSyLOC0xqkfwFdzFaaGxHgRfbxeFf+ygrVLDcVeZ3Yd25L3ADn4yNOzJpzCpCPkiYaJPT5Ufyp3ijnlf0xSBdXz6iqaRGaL8kfj6suz0CmH20ckye884LRcbWmjYRcB+7C6FKSLWZEYPd0OrBZr8zQQv7hVssjkT7hR3xNw+ENclmNcNknGtxGzHYG2Bk6XVbTunP3WUojLcX0dTylQNOTGSzk89ooKRDfUjIZYtVTmUvJ/5ebA+rqIIXXxjnrbjeXy64aBHZFm2PNC0jsT2FA2hVezQJz4r5W2Cz1d5LM1Mfrn+Mdai1Ctc6r/A1KY8ChUK1gW7TbGp2z9Mb8V6Z4Sf/cVMAs7ukie9+sRuU+JhXSb83RWnKbQg/u65iePOUXo3rwdlQWBg1UT7y2KE2KbMi4InBs7Z/Haq6YErju0XJA1vK0y/jfksOREtXJjqgHCqp2i9MW8UBtRhs70uSBg3dd4mSaITiukEZ9TJ7Ny1iAi6WfqlGnxF2gq9hCtHf27dftcH3K1GwkgYH6NNLX9o4ChXX+QS4hySwiWNUJNLkmOY5CMOU6sWCHfnYmOTjjFeTwgfbLO5HfOYWFLkzn84VjTJjgIH3eZsnpDZXBF2gLLitpVYITxT4FFeHrGRDEeiMg3nwFO5sQ== svc_terrafirm"
   public_key = "${var.public_key}"
 }
 
