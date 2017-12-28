@@ -1,5 +1,10 @@
 #!/bin/bash
 
+echo "**************************************************************************************************"
+echo "Running Watchmaker test script"
+echo "**************************************************************************************************"
+
+
 wait_file() {
   local file="$1"; shift
   local wait_seconds="${1:-10}"; shift # 10 seconds as default timeout
