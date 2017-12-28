@@ -62,7 +62,9 @@ phases:
       - echo "Applying Terraform plan (which installs watchmaker) "
       - echo "NOTE, this will fail if remote execute calls fail"
       - TF_VAR_private_key="${SSH_KEY}" ./terraform apply -input=false tfplan
-      - TF_VAR_private_key="${SSH_KEY}" ./terraform state pull -target=aws_instance.centos6 -input=false | ./jq.dms '.modules[0].resources."aws_instance.centos6".primary.id'
+      - AWS_INSTANCE_ID="$(TF_VAR_private_key="${SSH_KEY}" ./terraform state pull -target=aws_instance.centos6 -input=false | ./jq.dms '.modules[0].resources."aws_instance.centos6".primary.id')"
+      - export AWS_INSTANCE_ID
+      - echo "Instance ID, ${AWS_INSTANCE_ID}"
   post_build:
     commands:
       - echo "Destroying everything..."
