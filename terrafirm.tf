@@ -84,6 +84,6 @@ USERDATA
   #}
   
   provisioner "remote-exec" {
-    inline = ["watchmaker --version",]
+    inline = ["sleep 300", "watchmaker --version",]
   }
 }
