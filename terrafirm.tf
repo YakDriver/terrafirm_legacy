@@ -9,7 +9,6 @@ resource "aws_key_pair" "auth" {
 resource "aws_security_group" "terrafirm" {
   name        = "terrafirm_sg"
   description = "Used in terrafirm"
-  #vpc_id      = "${aws_vpc.default.id}"
 
   # SSH access from anywhere
   ingress {
