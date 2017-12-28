@@ -88,8 +88,7 @@ USERDATA
   
   provisioner "remote-exec" {
     inline = [
-      "sudo -i", 
-      "watchmaker --version",
+      "sudo watchmaker --version",
     ]
   }
 }
