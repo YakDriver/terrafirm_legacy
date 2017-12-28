@@ -10,6 +10,7 @@ env:
     NAMED_PROFILE: terrafirm
   parameter-store:
     SSH_KEY: "/CodeBuild/terrafirm/ssh_key"
+    PUBLIC_KEY: "/CodeBuild/terrafirm/public_key"
 
 phases:
   install:
