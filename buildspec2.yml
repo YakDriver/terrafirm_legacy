@@ -7,11 +7,9 @@ env:
     TERRAFIRM_DESC_URL: https://github.com/YakDriver/terrafirm
     JQ_INSTALL: https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64
     KEY_PAIR_NAME: svc_terrafirm_kp
+    NAMED_PROFILE: terrafirm
   parameter-store:
-    NAMED_PROFILE: "/CodeBuild/terrafirm/named_profile"
     SSH_KEY: "/CodeBuild/terrafirm/ssh_key"
-    #SECRET_KEY: "/CodeBuild/terrafirm/secret_key"
-    #PRIVATE_KEY: "/CodeBuild/terrafirm/access_key_id"
 
 phases:
   install:
