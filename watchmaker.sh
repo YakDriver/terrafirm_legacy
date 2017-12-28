@@ -16,7 +16,7 @@ wait_file() {
 
 exec_file=/usr/bin/watchmaker
 
-wait_file "$exec_file" 600 || {
+wait_file "$exec_file" 300 || {
   echo "Executable on remote instance never became available for $? seconds: '$exec_file'"
   exit 1
 }
