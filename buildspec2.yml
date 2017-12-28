@@ -16,6 +16,8 @@ phases:
     commands:
       - echo "Installing unzip............"
       - apt -y install unzip
+      - echo "Installing jq..............."
+      - apt -y install jq
       - echo "Installing Terraform..."
       - echo `pwd`
       - curl -L "${TF_ZIP}" -o tf.zip && unzip tf.zip
