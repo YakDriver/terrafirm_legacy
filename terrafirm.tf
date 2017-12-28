@@ -63,7 +63,7 @@ USERDATA
     user     = "${var.ssh_user}"
     private_key = "${var.private_key}"
     #user     = "root"
-    timeout   = "30m"
+    timeout   = "3m"
   }
   
   #provisioner "remote-exec" {
