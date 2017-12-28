@@ -6,6 +6,7 @@ env:
     TF_ZIP: https://releases.hashicorp.com/terraform/0.11.1/terraform_0.11.1_linux_amd64.zip
     TERRAFIRM_DESC_URL: https://github.com/YakDriver/terrafirm
     JQ_INSTALL: https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64
+    KEY_PAIR_NAME: svc_terrafirm_kp
   parameter-store:
     NAMED_PROFILE: "/CodeBuild/terrafirm/named_profile"
     SSH_KEY: "/CodeBuild/terrafirm/ssh_key"
@@ -49,6 +50,8 @@ phases:
       #  fi
       - echo "AWS Profile setup..."
       - AWS_PROFILE=$NAMED_PROFILE ; export AWS_PROFILE
+      - echo "Creating a key pair "
+      - aws ec2 import-key-pair --key-name "${KEY_PAIR_NAME}" --public-key-material "${PUBLIC_KEY}"
       - echo "Terraform version " ; ./terraform --version
       - TF_VAR_private_key="${SSH_KEY}" ; export TF_VAR_private_key
       - TF_VAR_public_key="${PUBLIC_KEY}" ; export TF_VAR_public_key
@@ -58,7 +61,7 @@ phases:
       #- echo "Terraform config file " ; cat terrafirm.tf
       #- echo "Initializing Terraform " ; TF_VAR_private_key="${SSH_KEY}" ./terraform init -input=false
       - echo "Initializing Terraform " ; ./terraform init -input=false
-      - echo "Importing key pair " ; ./terraform import aws_key_pair.auth svc_terrafirm
+      - echo "Importing key pair " ; ./terraform import aws_key_pair.auth "${KEY_PAIR_NAME}"
       - echo "Create provisiong plan " ; ./terraform plan -out=tfplan -input=false
       - 
   build:
