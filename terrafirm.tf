@@ -86,9 +86,9 @@ USERDATA
   #    ]
   #}
   
-  #provisioner "remote-exec" {
-  #  inline = [
-  #    "sudo watchmaker --version",
-  #  ]
-  #}
+  provisioner "remote-exec" {
+    inline = [
+      "/usr/bin/watchmaker --version",
+    ]
+  }
 }
